@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="ff9b2562-deee-453d-93f6-e7aa33cf0500" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RecomBook/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RecomBook/.idea/RecomBook.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RecomBook/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RecomBook/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RecomBook/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RecomBook/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RecomBook/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RecomBook/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RecomBook/app.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RecomBook/app/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RecomBook/app/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RecomBook/app/static/css/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RecomBook/app/templates/base.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RecomBook/app/templates/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RecomBook/app/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RecomBook/exemple_config.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RecomBook/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/RecomBook/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1yDej1gvHdP1Ykg0vG0uZkLZ7TT" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ff9b2562-deee-453d-93f6-e7aa33cf0500" name="Changes" comment="" />
+      <created>1631790718293</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1631790718293</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

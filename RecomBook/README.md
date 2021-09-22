@@ -7,7 +7,7 @@ Suivre les indications ci-dessous :
 
 ```bash
 git clone https://github.com/Simplon-Martin/Moteur_recommandation_livre
-cd cd RecomBook/
+cd RecomBook/
 ```
 
 Sous Windows : 
@@ -38,23 +38,35 @@ mkdir instance
 cp exemple_config.yml instance/config.yml
 ```
 
+Générer le dossier "migrations" :
+```bash
+flask db init
+```
+Au besoin : 
+```bash
+flask db stamp head
+flask db migrate
+```
+Création du script.sql et insertion des données : 
 ```bash
 flask db upgrade
 flask insert-db
 ```
+Ne pas prendre en compte pour le moment : 
 
+-------------------------------
 Créer un utilisateur
 Afin d'utiliser l'app, vous allez devoir vous connecter avec un utilisateur. Pour le créer :
 
 ```bash
 flask create-user
 ```
-
+---------------------
 Exécution
 Pour lancer l'app, vous devrez taper la commande :
 
 ```bash
-FLASK_APP=app.py FLASK_ENV=development flask run --port 8080
+FLASK_ENV=development flask run --port 8080
 ```
 
 

@@ -1,8 +1,8 @@
-DEFAULT_DB: POSTGRES
-POSTGRES:
-  connector: postgresql+psycopg2
-  user: predichoc
+DEFAULT_DB: MYSQL
+MYSQL:
+  connector: mysql+pymysql
+  user: user
   password: password
   host: localhost
-  port: 5432
-  bdd: predichoc
+  port: 3306
+  bdd: bdd

@@ -48,3 +48,4 @@ threadpoolctl==2.2.0
 toml==0.10.2
 tomli==1.2.1
 Werkzeug==2.0.1
+nltk==3.6.3

@@ -6,7 +6,7 @@ import yaml
 from app.controllers import main_controllers
 from app.db import db
 from app import models
-# from app.commands import insert_db, create_user
+from app.commands import insert_db
 
 
 # app = Flask(__name__)
@@ -66,7 +66,7 @@ def create_app(test_config=None):
     migrate.init_app(app, db)
 
     # On ajoute la commande "flask insert-db" à l'application
-    # app.cli.add_command(insert_db)
+    app.cli.add_command(insert_db)
 
     # On ajoute la commande "flask create-user" à l'application
     # app.cli.add_command(create_user)

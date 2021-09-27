@@ -3,13 +3,8 @@ import pandas as pd
 from flask.cli import with_appcontext
 from consolemenu import SelectionMenu
 from app.db import db
-from app.models import Books, Booktags, Tags, Toread, Ratings
-from app.helpers import (
-    format_data_caracteristiques,
-    # format_data_lieux,
-    # format_data_usagers,
-    # format_data_vehicules,
-)
+from app.models import Books, Booktags, Tags,  Ratings, Goodreads_book, Toread
+from app.helpers import (clean_books, clean_data_tags_booktags)
 
 
 @click.command("insert-db")
@@ -17,48 +12,23 @@ from app.helpers import (
 def insert_db():
     """Insère les données nécessaire à l'utilisation de l'application"""
 
+    tags = pd.read_csv("data/tags.csv")
+    book_tags = pd.read_csv("data/book_tags.csv")
+    to_read = pd.read_csv("data/to_read.csv")
+    books = pd.read_csv("data/books.csv")
+    ratings = pd.read_csv("data/ratings.csv")
 
-    """
-     # On récupère les données du fichier CSV dans un dataframe
-    caracteristiques = pd.read_csv(
-        "data/caracteristiques.csv", delimiter=";", decimal=","
-    )
-    lieux = pd.read_csv("data/lieux.csv", delimiter=";", decimal=",")
-    usagers = pd.read_csv("data/usagers.csv", delimiter=";", decimal=",")
-    vehicules = pd.read_csv("data/vehicules.csv", delimiter=";", decimal=",")
-    # On format les données (int64 pour les champs) afin de les préparer à l'insertion
-    caracteristiques = format_data_caracteristiques(caracteristiques)
-    lieux = format_data_lieux(lieux)
-    vehicules = format_data_vehicules(vehicules)
-    usagers = format_data_usagers(usagers)
-    # On insère les données dans la table
-    Caracteristique.insert_from_pd(caracteristiques)
-    Lieux.insert_from_pd(lieux)
-    Vehicule.insert_from_pd(vehicules)
-    Usager.insert_from_pd(usagers)
-    print("Données dans la BDD insérées")
+    print(ratings)
 
-    # On crée les roles Admin et Membre avec des permissions différentes
-    roles = [
-        UserRole(
-            name="Admin",
-            permissions=[
-                "admin.read",
-                "admin.write",
-                "admin.update",
-                "user.read",
-                "user.write",
-                "user.update",
-            ],
-        ),
-        UserRole(name="Membre", permissions=["user.read"]),
-    ]
-    # On ajoute chaque rôle à la BDD
-    for role in roles:
-        db.session.add(role)
-    print("Roles ajoutées")
+    goodreads_book, tags, book_tags = clean_data_tags_booktags(tags, book_tags)
+    books = clean_books(books)
 
-    # On confirme tous les changements pour la transaction
-    db.session.commit()
-    print("Tout a été inséré dans la base de données !")
-    """
+    Tags.insert_from_pd(tags)
+    Goodreads_book.insert_from_pd(goodreads_book)
+    Booktags.insert_from_pd(book_tags)
+    Books.insert_from_pd(books)
+    Ratings.insert_from_pd(ratings)
+    Toread.insert_from_pd(to_read)
+
+    print("Données insérées !!")
+

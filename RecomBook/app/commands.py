@@ -18,7 +18,7 @@ def insert_db():
     books = pd.read_csv("data/books.csv")
     ratings = pd.read_csv("data/ratings.csv")
 
-    print(ratings)
+    # print(ratings)
 
     goodreads_book, tags, book_tags = clean_data_tags_booktags(tags, book_tags)
     books = clean_books(books)

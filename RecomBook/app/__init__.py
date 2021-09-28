@@ -72,7 +72,7 @@ def create_app(test_config=None):
     # app.cli.add_command(create_user)
 
     # On initialise bootstrap
-    # Bootstrap(app)
+    Bootstrap(app)
 
     # On ajoute les controllers
     app.register_blueprint(main_controllers)

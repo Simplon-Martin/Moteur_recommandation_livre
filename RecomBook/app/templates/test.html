@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Test{% endblock %}
+{% block body %}
+
+<div class="netflix">
+    <!-- Swiper -->
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+        {% for key,value in books_1.iterrows() %}
+            <div class="swiper-slide" style="height:fit-content;"><img style="max-height: 300px;" src="{{ value[2] }}" /></div>
+        {%endfor%}
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+</div>
+
+<div class="container">
+    <hr class="mb-5"/>
+    <h2>Entrez votre identifiant :</h2>
+    <form action="{{url_for('main.reco_user')}}" method="post">
+        <div class="form-group">
+            <input type="text" class="form-control" id="user_id" name="user_id" placeholder="Identifiant de l'utilisateur ex: 550, 1200">
+        </div>
+        <button id="clickMe" type="submit" class="btn btn-primary">Envoyer</button>
+    </form>
+</div>
+
+<div id="loading" class="hidden">
+    <h1>Veuillez patienter pendant le chargement de la page.</h1>
+</div>
+
+
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300;700&display=swap');
+
+*, *::before, *::after {
+    padding: 0;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans Condensed', sans-serif;
+    min-height: 100vh;
+    background-color: #eee;
+    background-size: 10px 10px;
+    background-image:
+        radial-gradient(circle at 50% 50%, #ddd, #ddd 1px, transparent 1px),
+        radial-gradient(circle at 0 0, #ddd, #ddd 1px, transparent 1px),
+        radial-gradient(circle at 0 100%, #ddd, #ddd 1px, transparent 1px),
+        radial-gradient(circle at 100% 0, #ddd, #ddd 1px, transparent 1px),
+        radial-gradient(circle at 100% 100%, #ddd, #ddd 1px, transparent 1px);
+    color: #333;
+}
+
+:root {
+    --clr-border: #333;
+    --AnimationLength: 0px;
+}
+
+.content {
+    width: 100%; max-width: 960px;
+    padding: 2em 2em 10em;
+}
+
+h2 {
+    margin: 1em auto;
+
+    & span {
+        color: #777;
+    }
+}
+
+p {
+    margin: 2em auto;
+    font-weight: bold;
+}
+
+hr {
+    height: 3px;
+    border: none;
+    margin: 4em auto;
+    background-color: #aaa;
+}
+</style>
+
+
+    <!-- Swiper JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+    <!-- Initialize Swiper -->
+    <script>
+      var swiper = new Swiper(".mySwiper", {
+        slidesPerView: 8,
+        spaceBetween: 30,
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+      });
+      document.getElementById("clickMe").onclick = function () {
+      var v = document.getElementById("loading")
+      v.className = 'loader';
+      };
+    </script>
+{% endblock %}

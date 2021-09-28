@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block title %}Recommandations des utilisateurs{% endblock %}
+{% block body %}
+<div class="container">
+    <h1 style="text-align:center; color: #dc3545;">Livres recommandés par les utilisateurs</h1>
+</div>
+<div class="netflix">
+    <!-- Swiper -->
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+            {% for key,value in data.iterrows() %}
+            <div class="swiper-slide" style="height:fit-content;"><img style="max-height: 300px;" src="{{ value[21] }}" /></div>
+            {%endfor%}
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+</div>
+
+<hr class="mb-5"/>
+<div style="text-align:center; color: #dc3545;">
+    <h2>Par genre : </h2>
+</div>
+{% for df in list_gender %}
+<div class="netflix">
+    <hr class="mb-5"/>
+    <!-- Swiper -->
+    <h2>{{df.tag_name[0:1].values[0]}}</h2>
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+            {% for key,value in df.iterrows() %}
+            <div class="swiper-slide" style="height:fit-content;"><img style="max-height: 300px;" src="{{ value[21] }}" /></div>
+            {%endfor%}
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+</div>
+{% endfor %}
+
+<hr class="mb-5"/>
+<div style="text-align:center; color: #dc3545;">
+    <h2>Vous aimerez aussi : </h2>
+</div>
+<div class="netflix" >
+    <hr class="mb-5"/>
+    <!-- Swiper -->
+    <div class="swiper mySwiper" style="padding-bottom: 170px;">
+        <div class="swiper-wrapper">
+            {% for key,value in most_recent.iterrows() %}
+            <div class="swiper-slide" style="height:fit-content;"><img style="max-height: 300px;" src="{{ value[24] }}" /></div>
+            {%endfor%}
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+</div>
+
+
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300;700&display=swap');
+
+*, *::before, *::after {
+    padding: 0;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans Condensed', sans-serif;
+    min-height: 100vh;
+    background-color: #eee;
+    background-size: 10px 10px;
+    background-image:
+        radial-gradient(circle at 50% 50%, #ddd, #ddd 1px, transparent 1px),
+        radial-gradient(circle at 0 0, #ddd, #ddd 1px, transparent 1px),
+        radial-gradient(circle at 0 100%, #ddd, #ddd 1px, transparent 1px),
+        radial-gradient(circle at 100% 0, #ddd, #ddd 1px, transparent 1px),
+        radial-gradient(circle at 100% 100%, #ddd, #ddd 1px, transparent 1px);
+    color: #333;
+}
+
+:root {
+    --clr-border: #333;
+    --AnimationLength: 0px;
+}
+
+.content {
+    width: 100%; max-width: 960px;
+    padding: 2em 2em 10em;
+}
+
+h2 {
+    margin: 1em auto;
+
+    & span {
+        color: #777;
+    }
+}
+
+p {
+    margin: 2em auto;
+    font-weight: bold;
+}
+
+hr {
+    height: 3px;
+    border: none;
+    margin: 4em auto;
+    background-color: #aaa;
+}
+</style>
+
+
+
+<!-- Swiper JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+    <!-- Initialize Swiper -->
+    <script>
+      var swiper = new Swiper(".mySwiper", {
+        slidesPerView: 8,
+        spaceBetween: 30,
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+      });
+    </script>
+
+{%endblock%}

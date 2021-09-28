@@ -2,7 +2,147 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block body %}
-<div class="section-1">
-    <h1>Hello world TEST</h1>
+
+
+<!-- TEST SLIDER -->
+
+<div class="container my-4">
+    <hr class="mb-5"/>
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators" style="background-color: black;">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+        </ol>
+
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="row">
+                    {% for key,value in books_1.iterrows() %}
+                    <div class="col-md-3">
+                        <div class="card mb-2">
+                            <img style="max-height:375px" src="{{ value[2]}}" class="d-block w-1000" alt="">
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">{{value[0]}}</h4>
+                            <p class="card-text">Auteur : {{value[1]}}</p>
+                            <a class="btn btn-primary">Button</a>
+                        </div>
+                    </div>
+                    {%endfor%}
+                </div>
+            </div>
+
+            <div class="carousel-item">
+                <div class="row">
+                    {% for key,value in books_2.iterrows() %}
+                    <div class="col-md-3">
+                        <div class="card mb-2">
+                            <img style="max-height:375px" src="{{ value[2]}}" class="d-block w-1000" alt="">
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">{{value[0]}}</h4>
+                            <p class="card-text">Auteur : {{value[1]}}</p>
+                            <a class="btn btn-primary">Button</a>
+                        </div>
+                    </div>
+                    {%endfor%}
+                </div>
+            </div>
+
+            <div class="carousel-item">
+                <div class="row">
+                    {% for key,value in books_3.iterrows() %}
+                    <div class="col-md-3">
+                        <div class="card mb-2">
+                            <img style="max-height:375px" src="{{ value[2]}}" class="d-block w-1000" alt="">
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">{{value[0]}}</h4>
+                            <p class="card-text">Auteur : {{value[1]}}</p>
+                            <a class="btn btn-primary">Button</a>
+                        </div>
+                    </div>
+                    {%endfor%}
+                </div>
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev" style="background-color:yellow">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next" style="background-color:yellow">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
 </div>
+
+<div class="boxes">
+        <div class="box box-a">Simple</div>
+        <div class="box box-b">Slanted</div>
+        <div class="box box-c">Dotted</div>
+        <div class="box box-d">Long</div>
+        <div class="box box-e">Cornered</div>
+        <div class="box box-f">Centered</div>
+        <div class="box box-g">Faded</div>
+        <div class="box box-h">Animated</div>
+    </div>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300;700&display=swap');
+
+*, *::before, *::after {
+    padding: 0;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans Condensed', sans-serif;
+    min-height: 100vh;
+    background-color: #eee;
+    background-size: 10px 10px;
+    background-image:
+        radial-gradient(circle at 50% 50%, #ddd, #ddd 1px, transparent 1px),
+        radial-gradient(circle at 0 0, #ddd, #ddd 1px, transparent 1px),
+        radial-gradient(circle at 0 100%, #ddd, #ddd 1px, transparent 1px),
+        radial-gradient(circle at 100% 0, #ddd, #ddd 1px, transparent 1px),
+        radial-gradient(circle at 100% 100%, #ddd, #ddd 1px, transparent 1px);
+    color: #333;
+}
+
+:root {
+    --clr-border: #333;
+    --AnimationLength: 0px;
+}
+
+.content {
+    width: 100%; max-width: 960px;
+    padding: 2em 2em 10em;
+}
+
+h2 {
+    margin: 1em auto;
+    text-decoration: underline;
+    text-decoration-color: #aaa;
+
+    & span {
+        color: #777;
+    }
+}
+
+p {
+    margin: 2em auto;
+    font-weight: bold;
+}
+
+hr {
+    height: 3px;
+    border: none;
+    margin: 4em auto;
+    background-color: #aaa;
+}
+</style>
+
 {% endblock %}

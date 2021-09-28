@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from nltk.stem import PorterStemmer
+from app.db import db
 from datetime import datetime
 
 
@@ -81,3 +82,90 @@ def clean_data_tags_booktags(tags: pd.DataFrame, book_tags: pd.DataFrame):
     tags.rename(columns={'tag_lem': 'tag_id'}, inplace=True)
     goodreads_book = pd.DataFrame(book_tags['goodreads_book_id'].unique(), columns=['goodreads_id'])
     return goodreads_book, tags, book_tags
+
+
+def reco_by_user_id(user_id):
+    books = pd.read_sql_query('SELECT * FROM Books', db.engine, )
+    ratings = pd.read_sql_query('SELECT * FROM Ratings', db.engine, )
+
+    # Count per user
+    ratings_per_user = (
+        ratings.groupby(by=['user_id'])['rating'].count().reset_index().rename(columns={'rating': 'rating_count'}))
+
+    # Count per book
+    ratings_per_book = (
+        ratings.groupby(by=['book_id'])['rating'].count().reset_index().rename(columns={'rating': 'rating_count'}))
+
+    new_ratings = pd.merge(ratings_per_book, ratings, left_on='book_id', right_on='book_id', how='left')
+
+    # Creation de mapping pour les ids
+    # Comme on a filtré les données, les id ne sont pas continus, mais keras fonctionne avec des id continus
+
+    userId_map, inverse_userId_map = generate_id_mappings(new_ratings.user_id.unique())
+    bookId_map, inverse_bookId_map = generate_id_mappings(new_ratings.book_id.unique())
+
+    new_ratings['m_user_id'] = new_ratings['user_id'].map(inverse_userId_map)
+    new_ratings['m_book_id'] = new_ratings['book_id'].map(inverse_bookId_map)
+
+    liked_books = new_ratings.query('user_id ==' + str(user_id) + ' and rating == 5')['book_id']
+    df = books.query('book_id in @liked_books')
+    return df
+
+
+def generate_id_mappings(ids_list):
+    # Dictionnaires qui vont faire coincider des identifiants qui commencent à 0 et qui sont continus, avec les identifiants qui commencent à 1 et qui ne sont pas continus
+    userId_map = {new_id: old_id for new_id, old_id in enumerate(ids_list)}
+    inverse_userId_map = {old_id: new_id for new_id, old_id in enumerate(ids_list)}
+    return userId_map, inverse_userId_map
+
+
+def filter_by_gender(df):
+    tags = pd.read_sql_query('SELECT * FROM Tags', db.engine, )
+    book_tags = pd.read_sql_query('SELECT * FROM Booktags', db.engine, )
+
+    new_books_likeds = pd.merge(df, book_tags, left_on='goodreads_book_id', right_on='goodreads_book_id',
+                                how='left')
+    new_books_likeds_gender = pd.merge(new_books_likeds, tags, left_on='tag_id', right_on='tag_id', how='left')
+    gb_tg = new_books_likeds_gender.groupby(by=['tag_name'])['book_id'].count()
+    l_count = []
+    for i in gb_tg:
+        l_count.append(i)
+
+    t1 = pd.DataFrame(gb_tg.index, columns=['tag_name'])
+    t1['counts'] = l_count
+
+    most_gender = t1[t1['counts'] >= 10]
+
+    if len(most_gender) < 4:
+        most_gender = t1[t1['counts'] >= 8]
+    elif len(most_gender) < 2:
+        most_gender = t1[t1['counts'] >= 5]
+
+    l_df_gender = []
+    for tag in most_gender['tag_name']:
+        l_df_gender.append(new_books_likeds_gender[new_books_likeds_gender['tag_name'] == tag])
+
+    return l_df_gender, most_gender
+
+
+def filter_by_most_recent_gender(l_df_gender, most_gender):
+    tags = pd.read_sql_query('SELECT * FROM Tags', db.engine, )
+    book_tags = pd.read_sql_query('SELECT * FROM Booktags', db.engine, )
+    books = pd.read_sql_query('SELECT * FROM Books', db.engine, )
+
+    t4 = pd.merge(tags, book_tags, left_on='tag_id', right_on='tag_id', how='left')
+    t5 = pd.merge(t4, books, left_on='goodreads_book_id', right_on='goodreads_book_id', how='left')
+
+    l_df_gender = []
+    for tag in most_gender['tag_name']:
+        l_df_gender.append(t5[t5['tag_name'] == tag])
+
+    l_df_test = []
+    for df in l_df_gender:
+        l_df_test.append(df['original_publication_year'].sort_values(ascending=False)[:3].index)
+
+    l_df_final = []
+    for df_final in l_df_test:
+        l_df_final.append(t5.iloc[df_final])
+    df_final = pd.concat(l_df_final)
+    return df_final

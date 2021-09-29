@@ -2,11 +2,15 @@ import pandas as pd
 import numpy as np
 from nltk.stem import PorterStemmer
 from app.db import db
-from datetime import datetime
 
 
 # netoyage des données :::
 def clean_books(books: pd.DataFrame):
+    """
+
+    :param books:
+    :return: books
+    """
     # transformer les isbn en str puis ajouter un 0 pour faire un nombre à 10 chiffres
     books['isbn'] = books['isbn'].apply(str)
     books['isbn'] = books['isbn'].apply(lambda x: '0' + x if len(x) == 9 else x)
@@ -32,6 +36,12 @@ def clean_books(books: pd.DataFrame):
 
 
 def clean_data_tags_booktags(tags: pd.DataFrame, book_tags: pd.DataFrame):
+    """
+
+    :param tags:
+    :param book_tags:
+    :return:
+    """
     porter = PorterStemmer()  # instanciation du stemmer
     # avant le lem on remplace les - par ' ' si lem strip
     tags['tag_lem'] = tags['tag_name'].apply(lambda x: x.replace('-', ' ').strip())
@@ -85,6 +95,11 @@ def clean_data_tags_booktags(tags: pd.DataFrame, book_tags: pd.DataFrame):
 
 
 def reco_by_user_id(user_id):
+    """
+    Identification des livres les plus noté en fonction d'un utilisateur et des similaritées des notes des autres utilisateurs
+    :param user_id:
+    :return: df
+    """
     books = pd.read_sql_query('SELECT * FROM Books', db.engine, )
     ratings = pd.read_sql_query('SELECT * FROM Ratings', db.engine, )
 
@@ -113,6 +128,11 @@ def reco_by_user_id(user_id):
 
 
 def generate_id_mappings(ids_list):
+    """
+
+    :param ids_list:
+    :return: userId_map, inverse_userId_map
+    """
     # Dictionnaires qui vont faire coincider des identifiants qui commencent à 0 et qui sont continus, avec les identifiants qui commencent à 1 et qui ne sont pas continus
     userId_map = {new_id: old_id for new_id, old_id in enumerate(ids_list)}
     inverse_userId_map = {old_id: new_id for new_id, old_id in enumerate(ids_list)}
@@ -120,6 +140,11 @@ def generate_id_mappings(ids_list):
 
 
 def filter_by_gender(df):
+    """
+
+    :param df:
+    :return: l_df_gender, most_gender
+    """
     tags = pd.read_sql_query('SELECT * FROM Tags', db.engine, )
     book_tags = pd.read_sql_query('SELECT * FROM Booktags', db.engine, )
 
@@ -148,7 +173,14 @@ def filter_by_gender(df):
     return l_df_gender, most_gender
 
 
-def filter_by_most_recent_gender(l_df_gender, most_gender):
+def filter_by_most_recent_gender(most_gender):
+    """
+    Pa rapport aux livres préféré par genre, recroiser les genres les plus notés et recupérer, via ces genres,
+     sur l'ensemble des livres les plu recents.
+    :param l_df_gender:
+    :param most_gender:
+    :return: df_final
+    """
     tags = pd.read_sql_query('SELECT * FROM Tags', db.engine, )
     book_tags = pd.read_sql_query('SELECT * FROM Booktags', db.engine, )
     books = pd.read_sql_query('SELECT * FROM Books', db.engine, )

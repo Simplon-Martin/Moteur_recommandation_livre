@@ -37,6 +37,10 @@ Ouvrir le fichier exemple_config.yml et remplacer les valeurs par défaut par ce
 mkdir instance
 cp exemple_config.yml instance/config.yml
 ```
+Créer une BDD Mysql :
+```sql
+CREATE DATABASE  IF NOT EXISTS `recom` /*!40100 DEFAULT CHARACTER SET utf8mb4 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+```
 
 Générer le dossier "migrations" :
 ```bash
@@ -52,16 +56,7 @@ Création du script.sql et insertion des données :
 flask db upgrade
 flask insert-db
 ```
-Ne pas prendre en compte pour le moment : 
 
--------------------------------
-Créer un utilisateur
-Afin d'utiliser l'app, vous allez devoir vous connecter avec un utilisateur. Pour le créer :
-
-```bash
-flask create-user
-```
----------------------
 Exécution
 Pour lancer l'app, vous devrez taper la commande :
 
@@ -71,7 +66,7 @@ FLASK_ENV=development flask run --port 8080
 
 
 ## Contribution
-Mohamad, Remi, Martin
+Remi, Martin
 
 ## License
 

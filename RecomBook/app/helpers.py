@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from nltk.stem import PorterStemmer
 from app.db import db
+from sklearn.metrics.pairwise import cosine_similarity
 
 
 # netoyage des données :::
@@ -201,3 +202,44 @@ def filter_by_most_recent_gender(most_gender):
         l_df_final.append(t5.iloc[df_final])
     df_final = pd.concat(l_df_final)
     return df_final
+
+
+def filter_content_base_by_author(book_id):
+    ratings = pd.read_sql_query('SELECT * FROM Ratings', db.engine, )
+    ratings_per_book = (
+        ratings.groupby(by=['book_id'])['rating'].count().reset_index().rename(columns={'rating': 'rating_count'}))
+
+    books = pd.read_sql_query('SELECT * FROM Books', db.engine, )
+    books = books[['book_id', 'goodreads_book_id', 'best_book_id', 'work_id', 'books_count', 'isbn', 'isbn13',
+                   'original_publication_year', 'original_title', 'title', 'language_code', 'average_rating',
+                   'ratings_count', 'work_ratings_count', 'work_text_reviews_count', 'ratings_1', 'ratings_2',
+                   'ratings_3', 'ratings_4', 'ratings_5', 'image_url', 'small_image_url', 'authors']]
+
+    new_ratings = pd.merge(ratings_per_book, ratings, left_on='book_id', right_on='book_id', how='left')
+
+    userId_map, inverse_userId_map = generate_id_mappings(new_ratings.user_id.unique())
+    bookId_map, inverse_bookId_map = generate_id_mappings(new_ratings.book_id.unique())
+
+    new_ratings['m_user_id'] = new_ratings['user_id'].map(inverse_userId_map)
+    new_ratings['m_book_id'] = new_ratings['book_id'].map(inverse_bookId_map)
+
+    books_authors = books.join(books['authors'].str.get_dummies(","))
+    books_authors["m_book_id"] = books_authors['book_id'].map(inverse_bookId_map)
+
+    books_authors.set_index("m_book_id", inplace=True)  # Les mMovieId sont les index
+    books_authors = books_authors.loc[books_authors.index.dropna()]
+
+    cos_sim = cosine_similarity(books_authors.iloc[:, 23:])
+
+    m_book_id = inverse_bookId_map[book_id]
+    top_books = np.argsort(cos_sim[m_book_id])[-10:][::2]
+    top_books_bookid = [bookId_map[x] for x in top_books]
+
+    df_best_authors = books.query('book_id in @top_books_bookid')
+    return df_best_authors
+
+
+def get_by_id(book_id):
+    book = pd.read_sql_query("SELECT original_title, authors, image_url FROM Books WHERE book_id={0}".format(book_id),
+                             db.engine, )
+    return book

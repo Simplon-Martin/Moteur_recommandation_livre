@@ -1,16 +1,30 @@
 {% extends "base.html" %}
-{% block title %}Test{% endblock %}
+{% block title %}Livre{% endblock %}
 {% block body %}
-<h1 style="text-align:center">Clickez sur un de ces livres pour voir le détail du livre et decouvrir les livres recommandés par auteurs </h1>
-<h3 style="text-align:center">Cela peut prendre quelques minutes....</h3>
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-sm-12 col-md-2"><img src="{{book.image_url[0]}}" style="height:250px"/></div>
+        <div class="col-sm-12 col-md-10">
+            <h2 style="text-align:center">{{book.original_title[0]}}</h2>
+            <h3 style="text-align:center">{{book.authors[0]}}</h3>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <hr class="mb-5"/>
+<div style="text-align:center; color: #dc3545;">
+    <h2>Recommandation par authors : </h2>
+</div>
+</div>
+
 <div class="netflix">
     <!-- Swiper -->
     <div class="swiper mySwiper">
         <div class="swiper-wrapper">
-        {% for key,value in books_1.iterrows() %}
+        {% for key,value in best_authors.iterrows() %}
             <div class="swiper-slide" style="height:fit-content;">
-                <a class="link_b" style="width:inherit;" href="{{ url_for('main.find_book', book_id=value[0]) }}">
-                    <img style="max-height: 300px;" src="{{ value[3] }}" />
+                <a href="{{ url_for('main.find_book', book_id=value[0]) }}">
+                    <img style="height: auto; height:auto;" src="{{ value[21] }}" />
                 </a>
             </div>
         {%endfor%}
@@ -18,23 +32,6 @@
         <div class="swiper-pagination"></div>
     </div>
 </div>
-
-<div class="container">
-    <hr class="mb-5"/>
-    <h2>Entrez votre identifiant :</h2>
-    <form action="{{url_for('main.reco_user')}}" method="post">
-        <div class="form-group">
-            <input type="text" class="form-control" id="user_id" name="user_id" placeholder="Identifiant de l'utilisateur ex: 550, 1200">
-        </div>
-        <button id="clickMe" type="submit" class="btn btn-primary">Envoyer</button>
-    </form>
-</div>
-
-<div id="loading" class="hidden">
-    <h1>Veuillez patienter pendant le chargement de la page.</h1>
-</div>
-
-
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300;700&display=swap');
@@ -63,6 +60,7 @@ body {
     --clr-border: #333;
     --AnimationLength: 0px;
 }
+
 .content {
     width: 100%; max-width: 960px;
     padding: 2em 2em 10em;
@@ -70,14 +68,17 @@ body {
 
 h2 {
     margin: 1em auto;
+
     & span {
         color: #777;
     }
 }
+
 p {
     margin: 2em auto;
     font-weight: bold;
 }
+
 hr {
     height: 3px;
     border: none;
@@ -85,22 +86,19 @@ hr {
     background-color: #aaa;
 }
 </style>
+
     <!-- Swiper JS -->
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
     <!-- Initialize Swiper -->
     <script>
       var swiper = new Swiper(".mySwiper", {
-        slidesPerView: 8,
+        slidesPerView: 5,
         spaceBetween: 30,
         pagination: {
           el: ".swiper-pagination",
           clickable: true,
         },
       });
-      document.getElementById("clickMe").onclick = function () {
-      var v = document.getElementById("loading")
-      v.className = 'loader';
-      };
     </script>
 {% endblock %}
